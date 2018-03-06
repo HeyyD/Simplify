@@ -1,4 +1,4 @@
-package com.simplify.hmhat.simplify;
+package com.tamk.hmhat.simplify;
 
 import org.junit.Test;
 
