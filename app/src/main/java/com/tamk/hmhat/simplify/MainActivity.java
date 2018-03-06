@@ -1,6 +1,7 @@
 package com.tamk.hmhat.simplify;
 
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -89,7 +90,22 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onLoginFailed(int i) {
-        Log.d(this.getClass().getSimpleName(), "onLoggedFailed");
+        Log.d(this.getClass().getSimpleName(), "onLoginFailed: " + i);
+        //9 = no premium account (I can't find any enum class for the
+        //Spotify sdk errors so I just simply have to use the raw integer
+        if(i == 9) {
+            Log.d(this.getClass().getSimpleName(), "No Premium");
+            //Notify the user that they need a premium account
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("NOT A PREMIUM ACCOUNT")
+                    .setMessage("Spotify account must be upgraded to premium");
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            dialog.setOnDismissListener((d) -> {
+                Log.d(this.getClass().getSimpleName(), "DISMISS");
+                this.finish();
+            });
+        }
     }
 
     @Override
