@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
+import com.spotify.sdk.android.player.Config;
 import com.spotify.sdk.android.player.ConnectionStateCallback;
 import com.spotify.sdk.android.player.Error;
 import com.spotify.sdk.android.player.Player;
@@ -49,16 +51,21 @@ public class MainActivity extends AppCompatActivity implements
         // Check if result comes from the correct activity
         if (requestCode == REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
+            if (response.getType() == AuthenticationResponse.Type.TOKEN) {
+                Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
+                Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
+                    @Override
+                    public void onInitialized(SpotifyPlayer spotifyPlayer) {
+                        player = spotifyPlayer;
+                        player.addConnectionStateCallback(MainActivity.this);
+                        player.addNotificationCallback(MainActivity.this);
+                    }
 
-            switch (response.getType()){
-                case TOKEN:
-                    Log.d(this.getClass().getSimpleName(), "SUCCESS");
-                    break;
-                case ERROR:
-                    Log.d(this.getClass().getSimpleName(), "ERROR: " + response.getError());
-                    break;
-                default:
-                    Log.d(this.getClass().getSimpleName(), "TYPE: " + response.getType());
+                    @Override
+                    public void onError(Throwable throwable) {
+                        Log.e("MainActivity", "Could not initialize player: " + throwable.getMessage());
+                    }
+                });
             }
         }
     }
