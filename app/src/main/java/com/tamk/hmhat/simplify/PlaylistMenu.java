@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,10 +23,14 @@ import java.util.List;
 public class PlaylistMenu extends Fragment {
 
     private List<Playlist> playlists = new ArrayList<>();
+    private ArrayAdapter<Playlist> adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.playlist_menu, container, false);
+        ListView listView = v.findViewById(R.id.user_lists);
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, playlists);
+        listView.setAdapter(adapter);
         return v;
     }
 
@@ -41,11 +47,15 @@ public class PlaylistMenu extends Fragment {
                     Log.d(this.getClass().getSimpleName(), playlist.getName());
                     playlists.add(playlist);
                 }
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         });
         t.start();
+
+        while(t.isAlive())
+            continue;
+
+        adapter.notifyDataSetChanged();
     }
 }
