@@ -2,6 +2,7 @@ package com.tamk.hmhat.simplify;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
+        initFragment();
+
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                 AuthenticationResponse.Type.TOKEN,
                 REDIRECT_URI);
@@ -50,6 +53,13 @@ public class MainActivity extends AppCompatActivity implements
         AuthenticationRequest request = builder.build();
 
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+    }
+
+    private void initFragment(){
+        Fragment fragment = new PlaylistMenu();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_view, fragment);
+        transaction.commit();
     }
 
     @Override

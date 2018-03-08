@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,20 @@ public class PlaylistMenu extends Fragment {
         ListView listView = v.findViewById(R.id.user_lists);
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, playlists);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener((list, view, i, l) -> {
+            Playlist playlist = (Playlist) list.getItemAtPosition(i);
+            changeFragment(playlist);
+        });
+
         return v;
+    }
+
+    private void changeFragment(Playlist playlist){
+        Fragment fragment = new PlaylistView();
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_view, fragment);
+        transaction.commit();
     }
 
     public void initPlaylist(){
