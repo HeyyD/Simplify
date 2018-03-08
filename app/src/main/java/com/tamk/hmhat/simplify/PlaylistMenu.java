@@ -47,6 +47,7 @@ public class PlaylistMenu extends Fragment {
         Fragment fragment = new PlaylistView();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_view, fragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 
