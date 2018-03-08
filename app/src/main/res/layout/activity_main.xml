@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main_view"
-    tools:context="com.tamk.hmhat.simplify.MainActivity">
+    android:orientation="vertical"
+    tools:context="com.tamk.hmhat.simplify.MainActivity"
+    android:weightSum="10">
 
-    <!--
-    <fragment
+    <RelativeLayout
         android:id="@+id/main_view"
         android:name="com.tamk.hmhat.simplify.PlaylistMenu"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9"/>
-    -->
+
     <fragment
         android:id="@+id/player_manager_bar"
         android:name="com.tamk.hmhat.simplify.PlayerManagerBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
-</RelativeLayout>
+        android:layout_weight="1"/>
+</LinearLayout>
