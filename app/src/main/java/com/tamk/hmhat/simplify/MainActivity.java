@@ -1,7 +1,7 @@
 package com.tamk.hmhat.simplify;
 
-import android.app.FragmentManager;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -83,10 +83,13 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onLoggedIn() {
-        Log.d(this.getClass().getSimpleName(), "onLoggedIn");
-        PlaylistMenu playlistMenu = (PlaylistMenu) getSupportFragmentManager().findFragmentById(R.id.main_view);
-        playlistMenu.initPlaylist();
-        //player.playUri("spotify:track:2TpxZ7JUBn3uw46aR7qd6V", 0, 0);
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_view);
+
+        if(fragment instanceof PlaylistMenu){
+            PlaylistMenu menu = (PlaylistMenu) fragment;
+            menu.initPlaylist();
+        }
     }
 
     @Override
