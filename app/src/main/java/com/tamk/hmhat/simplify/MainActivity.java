@@ -1,5 +1,6 @@
 package com.tamk.hmhat.simplify;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements
     // Can be any integer
     private static final int REQUEST_CODE = 1337;
 
+    private String accessToken;
+
     private Player player;
 
     @Override
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements
         if (requestCode == REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
+                this.accessToken = response.getAccessToken();
                 Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
                 Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
                     @Override
@@ -80,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLoggedIn() {
         Log.d(this.getClass().getSimpleName(), "onLoggedIn");
+        PlaylistMenu playlistMenu = (PlaylistMenu) getSupportFragmentManager().findFragmentById(R.id.main_view);
+        playlistMenu.initPlaylist();
         //player.playUri("spotify:track:2TpxZ7JUBn3uw46aR7qd6V", 0, 0);
     }
 
@@ -127,4 +133,6 @@ public class MainActivity extends AppCompatActivity implements
     public void onPlaybackError(Error error) {
         Log.d(this.getClass().getSimpleName(), "onPlaybackError");
     }
+
+    public String getAccessToken() {return this.accessToken;}
 }
