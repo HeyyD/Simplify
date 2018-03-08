@@ -17,25 +17,16 @@ import java.net.URL;
 public class RequestHandler {
 
     private MainActivity host;
-    private String address;
-    private String request;
 
-    public RequestHandler (MainActivity host){
+    public RequestHandler(MainActivity host){
         this.host = host;
     }
 
-    public String makeRequest(String address, String request){
-        this.address = address;
-        this.request = request;
-        return doInBackground();
-    }
-
-    private String doInBackground() {
-
+    public String getMethod(String address){
         try{
             URL url = new URL(address);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod(request);
+            connection.setRequestMethod("GET");
             connection.setRequestProperty("Authorization", "Bearer " + host.getAccessToken());
             connection.setRequestProperty("Accept", "application/json");
             connection.connect();

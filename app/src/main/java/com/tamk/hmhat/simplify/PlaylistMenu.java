@@ -1,5 +1,7 @@
 package com.tamk.hmhat.simplify;
 
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -35,27 +37,33 @@ public class PlaylistMenu extends Fragment {
     }
 
     public void initPlaylist(){
-        Thread t = new Thread(() -> {
-            RequestHandler handler = new RequestHandler((MainActivity) getActivity());
-            try {
-                JSONObject jsonObject = new JSONObject(handler.makeRequest("https://api.spotify.com/v1/me/playlists", "GET"));
-                JSONArray jsonArray = jsonObject.getJSONArray("items");
+        RequestHandler handler = new RequestHandler((MainActivity) getActivity());
 
-                for(int i = 0; i < jsonArray.length(); i++){
-                    JSONObject o = jsonArray.getJSONObject(i);
-                    Playlist playlist = new Playlist(o.getString("id"), o.getString("name"));
-                    Log.d(this.getClass().getSimpleName(), playlist.getName());
-                    playlists.add(playlist);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+        //AsyncTask will get the playlist's in a thread and update the view post execute
+        @SuppressLint("StaticFieldLeak") AsyncTask<String, Void, String> asyncTask = new AsyncTask<String, Void, String>() {
+            @Override
+            protected String doInBackground(String... strings) {
+                return handler.getMethod("https://api.spotify.com/v1/me/playlists");
             }
-        });
-        t.start();
 
-        while(t.isAlive())
-            continue;
+            @Override
+            protected void onPostExecute(String result){
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    JSONArray jsonArray = jsonObject.getJSONArray("items");
 
-        adapter.notifyDataSetChanged();
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        JSONObject o = jsonArray.getJSONObject(i);
+                        Playlist playlist = new Playlist(o.getString("id"), o.getString("name"));
+                        Log.d(this.getClass().getSimpleName(), playlist.getName());
+                        playlists.add(playlist);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                adapter.notifyDataSetChanged();
+            }
+        };
+        asyncTask.execute();
     }
 }
