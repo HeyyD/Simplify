@@ -37,6 +37,7 @@ public class PlaylistMenu extends Fragment {
 
         listView.setOnItemClickListener((list, view, i, l) -> {
             Playlist playlist = (Playlist) list.getItemAtPosition(i);
+            Log.d("ACCESS_TOKEN", playlist.getHref());
             changeFragment(playlist);
         });
 

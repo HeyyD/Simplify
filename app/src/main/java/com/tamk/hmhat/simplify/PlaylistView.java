@@ -36,10 +36,13 @@ public class PlaylistView extends Fragment {
         this.href = getArguments().getString("href");
 
         String imageUrl = getArguments().getStringArray("images")[0];
-        ImageView imageView = v.findViewById(R.id.cover);
-        ImageLoadTask loadImage = new ImageLoadTask(imageUrl, imageView);
-        loadImage.execute();
 
+        if(imageUrl != null){
+            ImageView imageView = v.findViewById(R.id.cover);
+            ImageLoadTask loadImage = new ImageLoadTask(imageUrl, imageView);
+            loadImage.execute();
+        }
+        
         ListView listView = v.findViewById(R.id.track_list);
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tracks);
         listView.setAdapter(adapter);
