@@ -27,6 +27,7 @@ public class PlaylistView extends Fragment {
 
     private int offset = 0;
     private String href;
+    private String uri;
     private ArrayAdapter<Track> adapter;
     private List<Track> tracks = new ArrayList<>();
 
@@ -35,6 +36,7 @@ public class PlaylistView extends Fragment {
         super.onCreate(savedInstanceState);
 
         this.href = getArguments().getString("href");
+        this.uri = getArguments().getString("uri");
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tracks);
         initSongs();
     }
@@ -55,8 +57,7 @@ public class PlaylistView extends Fragment {
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((list, view, i, l) -> {
-            Track track = (Track) list.getItemAtPosition(i);
-            MainActivity.player.playUri(track.getUri(), 0, 0);
+            MainActivity.player.playUri(uri, i, 0);
         });
 
         return v;
