@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback
 {
 
+    public static Player player;
+
     private static final String CLIENT_ID = "fed18b1e630343c2bbd7d05000b2c2a8";
     private static final String REDIRECT_URI = "http://localhost:8888/callback/";
 
@@ -34,8 +36,6 @@ public class MainActivity extends AppCompatActivity implements
     private static final int REQUEST_CODE = 1337;
 
     private String accessToken;
-
-    private Player player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

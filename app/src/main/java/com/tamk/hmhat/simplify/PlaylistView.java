@@ -54,6 +54,11 @@ public class PlaylistView extends Fragment {
         ListView listView = v.findViewById(R.id.track_list);
         listView.setAdapter(adapter);
 
+        listView.setOnItemClickListener((list, view, i, l) -> {
+            Track track = (Track) list.getItemAtPosition(i);
+            MainActivity.player.playUri(track.getUri(), 0, 0);
+        });
+
         return v;
     }
 
