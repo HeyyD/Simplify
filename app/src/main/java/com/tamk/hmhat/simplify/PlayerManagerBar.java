@@ -41,7 +41,10 @@ public class PlayerManagerBar extends Fragment {
     }
 
     private void previous(){
-        host.getPlayer().skipToPrevious();
+        if(host.getPlayer().getMetadata().prevTrack != null)
+            host.getPlayer().skipToPrevious();
+        else
+            host.getPlayer().seekToPosition(0);
     }
 
     private void play(){
@@ -53,7 +56,8 @@ public class PlayerManagerBar extends Fragment {
     }
 
     private void next() {
-        host.getPlayer().skipToNext();
+        if(host.getPlayer().getMetadata().nextTrack != null)
+            host.getPlayer().skipToNext();
     }
 
     public void setCurrentTrack(String artist, String track){
