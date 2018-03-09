@@ -45,6 +45,12 @@ public class PlaylistMenu extends Fragment {
 
     private void changeFragment(Playlist playlist){
         Fragment fragment = new PlaylistView();
+
+        Bundle args = new Bundle();
+        args.putString("href", playlist.getHref());
+
+        fragment.setArguments(args);
+
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_view, fragment);
         transaction.addToBackStack(null);
@@ -69,7 +75,7 @@ public class PlaylistMenu extends Fragment {
 
                     for(int i = 0; i < jsonArray.length(); i++){
                         JSONObject o = jsonArray.getJSONObject(i);
-                        Playlist playlist = new Playlist(o.getString("id"), o.getString("name"));
+                        Playlist playlist = new Playlist(o.getString("href"), o.getString("name"));
                         Log.d(this.getClass().getSimpleName(), playlist.getName());
                         playlists.add(playlist);
                     }

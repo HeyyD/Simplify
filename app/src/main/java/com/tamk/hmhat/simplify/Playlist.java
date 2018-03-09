@@ -6,16 +6,16 @@ package com.tamk.hmhat.simplify;
 
 public class Playlist {
 
-    private String id;
+    private String href;
     private String name;
 
-    public Playlist(String id, String name){
-        this.id = id;
+    public Playlist(String href, String name){
+        this.href = href;
         this.name = name;
     }
 
-    public String getId() {
-        return id;
+    public String getHref() {
+        return href;
     }
 
     public String getName() {

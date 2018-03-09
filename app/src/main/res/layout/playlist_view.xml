@@ -14,6 +14,7 @@
         android:src="@mipmap/ic_launcher" />
 
     <ListView
+        android:id="@+id/track_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/cover"
