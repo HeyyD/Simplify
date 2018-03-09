@@ -31,9 +31,17 @@ public class PlaylistView extends Fragment {
     private List<Track> tracks = new ArrayList<>();
 
     @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+        this.href = getArguments().getString("href");
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tracks);
+        initSongs();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.playlist_view, container, false);
-        this.href = getArguments().getString("href");
 
         String imageUrl = getArguments().getStringArray("images")[0];
 
@@ -44,9 +52,8 @@ public class PlaylistView extends Fragment {
         }
         
         ListView listView = v.findViewById(R.id.track_list);
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tracks);
         listView.setAdapter(adapter);
-        initSongs();
+        
         return v;
     }
 
