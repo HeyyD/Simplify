@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,31 @@ public class PlaylistMenu extends Fragment {
         ListView listView = v.findViewById(R.id.user_lists);
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, playlists);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener((list, view, i, l) -> {
+            Playlist playlist = (Playlist) list.getItemAtPosition(i);
+            Log.d("ACCESS_TOKEN", playlist.getHref());
+            changeFragment(playlist);
+        });
+
         return v;
+    }
+
+    private void changeFragment(Playlist playlist){
+        Fragment fragment = new PlaylistView();
+
+        Bundle args = new Bundle();
+        args.putString("href", playlist.getHref());
+        args.putStringArray("images", playlist.getImages());
+
+        fragment.setArguments(args);
+
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit,
+                                        R.anim.fragment_enter, R.anim.fragment_exit);
+        transaction.replace(R.id.main_view, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     public void initPlaylist(){
@@ -54,8 +79,17 @@ public class PlaylistMenu extends Fragment {
 
                     for(int i = 0; i < jsonArray.length(); i++){
                         JSONObject o = jsonArray.getJSONObject(i);
-                        Playlist playlist = new Playlist(o.getString("id"), o.getString("name"));
-                        Log.d(this.getClass().getSimpleName(), playlist.getName());
+                        String href = o.getString("href");
+                        String name = o.getString("name");
+
+                        JSONArray imagesJson = o.getJSONArray("images");
+                        String[] imageUrls = new String[imagesJson.length()];
+
+                        for(int j = 0; j < imagesJson.length(); j++){
+                            imageUrls[j] = imagesJson.getJSONObject(j).getString("url");
+                        }
+
+                        Playlist playlist = new Playlist(href, name, imageUrls);
                         playlists.add(playlist);
                     }
                 } catch (JSONException e) {

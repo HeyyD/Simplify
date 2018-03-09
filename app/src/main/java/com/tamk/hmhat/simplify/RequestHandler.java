@@ -39,7 +39,7 @@ public class RequestHandler {
                 String line;
 
                 while((line = reader.readLine()) != null){
-                    builder.append(line + "\n");
+                    builder.append(line);
                 }
                 reader.close();
 

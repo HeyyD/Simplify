@@ -1,7 +1,10 @@
 package com.tamk.hmhat.simplify;
 
-import android.app.FragmentManager;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,6 +42,11 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+
+        initFragment();
+
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                 AuthenticationResponse.Type.TOKEN,
                 REDIRECT_URI);
@@ -46,6 +54,25 @@ public class MainActivity extends AppCompatActivity implements
         AuthenticationRequest request = builder.build();
 
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+    }
+
+    private void initFragment(){
+        Fragment fragment = new PlaylistMenu();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_view, fragment);
+        transaction.commit();
+    }
+
+    @Override
+    public void onBackPressed(){
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            Log.i("MainActivity", "popping backstack");
+            fm.popBackStack();
+        } else {
+            Log.i("MainActivity", "nothing on backstack, calling super");
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -57,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
                 this.accessToken = response.getAccessToken();
+                Log.d("ACCESS_TOKEN", response.getAccessToken());
                 Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
                 Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
                     @Override
@@ -83,10 +111,13 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onLoggedIn() {
-        Log.d(this.getClass().getSimpleName(), "onLoggedIn");
-        PlaylistMenu playlistMenu = (PlaylistMenu) getSupportFragmentManager().findFragmentById(R.id.main_view);
-        playlistMenu.initPlaylist();
-        //player.playUri("spotify:track:2TpxZ7JUBn3uw46aR7qd6V", 0, 0);
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_view);
+
+        if(fragment instanceof PlaylistMenu){
+            PlaylistMenu menu = (PlaylistMenu) fragment;
+            menu.initPlaylist();
+        }
     }
 
     @Override
