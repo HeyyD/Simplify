@@ -24,6 +24,7 @@ import java.util.List;
 
 public class PlaylistView extends Fragment {
 
+    private int offset = 0;
     private String href;
     private ArrayAdapter<Track> adapter;
     private List<Track> tracks = new ArrayList<>();
@@ -45,7 +46,7 @@ public class PlaylistView extends Fragment {
             @Override
             protected String doInBackground(String... strings) {
                 RequestHandler handler = new RequestHandler((MainActivity) getActivity());
-                return handler.getMethod(href + "/tracks");
+                return handler.getMethod(href + "/tracks?offset=" + offset);
             }
 
             @Override
@@ -62,7 +63,14 @@ public class PlaylistView extends Fragment {
                         tracks.add(new Track(uri, name));
                     }
 
+                    Log.d("DEBUG", "offset: " + offset);
                     adapter.notifyDataSetChanged();
+
+                    if(jsonArray.length() == 100){
+                        offset += jsonArray.length();
+                        initSongs();
+                    }
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
