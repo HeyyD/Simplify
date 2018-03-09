@@ -54,6 +54,8 @@ public class PlaylistMenu extends Fragment {
         fragment.setArguments(args);
 
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit,
+                                        R.anim.fragment_enter, R.anim.fragment_exit);
         transaction.replace(R.id.main_view, fragment);
         transaction.addToBackStack(null);
         transaction.commit();

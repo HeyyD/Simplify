@@ -53,7 +53,7 @@ public class PlaylistView extends Fragment {
         
         ListView listView = v.findViewById(R.id.track_list);
         listView.setAdapter(adapter);
-        
+
         return v;
     }
 
