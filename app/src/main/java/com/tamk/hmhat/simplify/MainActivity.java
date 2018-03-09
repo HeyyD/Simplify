@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback
 {
 
-    public static Player player;
+    private Player player;
     private PlayerManagerBar playerManager;
 
     private static final String CLIENT_ID = "fed18b1e630343c2bbd7d05000b2c2a8";
@@ -176,4 +176,5 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public String getAccessToken() {return this.accessToken;}
+    public Player getPlayer() {return this.player;}
 }

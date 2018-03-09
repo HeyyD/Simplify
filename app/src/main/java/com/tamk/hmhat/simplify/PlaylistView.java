@@ -57,7 +57,8 @@ public class PlaylistView extends Fragment {
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((list, view, i, l) -> {
-            MainActivity.player.playUri(uri, i, 0);
+            MainActivity host = (MainActivity) getActivity();
+            host.getPlayer().playUri(uri, i, 0);
         });
 
         return v;

@@ -17,6 +17,7 @@ import com.spotify.sdk.android.player.Player;
 
 public class PlayerManagerBar extends Fragment {
 
+    private MainActivity host;
     private TextView currentTrack;
 
     @Override
@@ -34,24 +35,25 @@ public class PlayerManagerBar extends Fragment {
 
         currentTrack = v.findViewById(R.id.currentTrack);
 
+        host = (MainActivity) getActivity();
+
         return v;
     }
 
     private void previous(){
-        MainActivity.player.skipToPrevious();
+        host.getPlayer().skipToPrevious();
     }
 
     private void play(){
-        Log.d("DEBUG", MainActivity.player.getPlaybackState().toString());
 
-        if(MainActivity.player.getPlaybackState().isPlaying)
-            MainActivity.player.pause();
+        if(host.getPlayer().getPlaybackState().isPlaying)
+            host.getPlayer().pause();
         else
-            MainActivity.player.resume();
+            host.getPlayer().resume();
     }
 
     private void next() {
-        MainActivity.player.skipToNext();
+        host.getPlayer().skipToNext();
     }
 
     public void setCurrentTrack(String artist, String track){
