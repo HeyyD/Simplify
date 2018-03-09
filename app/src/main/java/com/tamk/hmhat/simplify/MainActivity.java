@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
                 this.accessToken = response.getAccessToken();
+                Log.d("ACCESS_TOKEN", response.getAccessToken());
                 Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
                 Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
                     @Override

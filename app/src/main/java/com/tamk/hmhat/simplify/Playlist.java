@@ -8,10 +8,12 @@ public class Playlist {
 
     private String href;
     private String name;
+    private String[] images;
 
-    public Playlist(String href, String name){
+    public Playlist(String href, String name, String[] images){
         this.href = href;
         this.name = name;
+        this.images = images;
     }
 
     public String getHref() {
@@ -20,6 +22,11 @@ public class Playlist {
 
     public String getName() {
         return name;
+    }
+
+
+    public String[] getImages() {
+        return images;
     }
 
     @Override

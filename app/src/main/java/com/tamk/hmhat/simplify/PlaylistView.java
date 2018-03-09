@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -33,6 +34,11 @@ public class PlaylistView extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.playlist_view, container, false);
         this.href = getArguments().getString("href");
+
+        String imageUrl = getArguments().getStringArray("images")[0];
+        ImageView imageView = v.findViewById(R.id.cover);
+        ImageLoadTask loadImage = new ImageLoadTask(imageUrl, imageView);
+        loadImage.execute();
 
         ListView listView = v.findViewById(R.id.track_list);
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tracks);
@@ -62,8 +68,6 @@ public class PlaylistView extends Fragment {
                         String name = o.getString("name");
                         tracks.add(new Track(uri, name));
                     }
-
-                    Log.d("DEBUG", "offset: " + offset);
                     adapter.notifyDataSetChanged();
 
                     if(jsonArray.length() == 100){
