@@ -26,17 +26,14 @@ import java.util.List;
 public class PlaylistView extends Fragment {
 
     private int offset = 0;
-    private String href;
-    private String uri;
+    private Playlist playlist;
     private ArrayAdapter<Track> adapter;
     private List<Track> tracks = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
-        this.href = getArguments().getString("href");
-        this.uri = getArguments().getString("uri");
+        this.playlist = getArguments().getParcelable("playlist");
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tracks);
         initSongs();
     }
@@ -45,7 +42,7 @@ public class PlaylistView extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.playlist_view, container, false);
 
-        String imageUrl = getArguments().getStringArray("images")[0];
+        String imageUrl = playlist.getImages()[0];
 
         if(imageUrl != null){
             ImageView imageView = v.findViewById(R.id.cover);
@@ -58,7 +55,7 @@ public class PlaylistView extends Fragment {
 
         listView.setOnItemClickListener((list, view, i, l) -> {
             MainActivity host = (MainActivity) getActivity();
-            host.getPlayer().playUri(uri, i, 0);
+            host.getPlayer().playUri(playlist.getUri(), i, 0);
         });
 
         return v;
@@ -69,7 +66,7 @@ public class PlaylistView extends Fragment {
             @Override
             protected String doInBackground(String... strings) {
                 RequestHandler handler = new RequestHandler((MainActivity) getActivity());
-                return handler.getMethod(href + "/tracks?offset=" + offset);
+                return handler.getMethod(playlist.getHref() + "/tracks?offset=" + offset);
             }
 
             @Override
