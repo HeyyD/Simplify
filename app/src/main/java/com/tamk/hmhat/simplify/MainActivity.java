@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements
                         player = spotifyPlayer;
                         player.addConnectionStateCallback(MainActivity.this);
                         player.addNotificationCallback(MainActivity.this);
-                        //player.setShuffle(true);
                     }
 
                     @Override
@@ -161,6 +160,11 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onPlaybackEvent(PlayerEvent playerEvent) {
+
+        if(playerEvent == PlayerEvent.kSpPlaybackNotifyPlay) {
+            if(!player.getPlaybackState().isShuffling)
+                player.setShuffle(true);
+        }
 
         if(playerEvent == PlayerEvent.kSpPlaybackNotifyTrackChanged){
             String artist = player.getMetadata().currentTrack.artistName;
