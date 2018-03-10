@@ -49,6 +49,7 @@ public class PlaylistMenu extends Fragment {
 
         Bundle args = new Bundle();
         args.putString("href", playlist.getHref());
+        args.putString("uri", playlist.getUri());
         args.putStringArray("images", playlist.getImages());
 
         fragment.setArguments(args);
@@ -81,6 +82,7 @@ public class PlaylistMenu extends Fragment {
                         JSONObject o = jsonArray.getJSONObject(i);
                         String href = o.getString("href");
                         String name = o.getString("name");
+                        String uri = o.getString("uri");
 
                         JSONArray imagesJson = o.getJSONArray("images");
                         String[] imageUrls = new String[imagesJson.length()];
@@ -89,7 +91,7 @@ public class PlaylistMenu extends Fragment {
                             imageUrls[j] = imagesJson.getJSONObject(j).getString("url");
                         }
 
-                        Playlist playlist = new Playlist(href, name, imageUrls);
+                        Playlist playlist = new Playlist(href, uri, name, imageUrls);
                         playlists.add(playlist);
                     }
                 } catch (JSONException e) {

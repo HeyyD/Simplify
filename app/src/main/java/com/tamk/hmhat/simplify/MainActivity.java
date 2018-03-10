@@ -26,6 +26,9 @@ public class MainActivity extends AppCompatActivity implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback
 {
 
+    private Player player;
+    private PlayerManagerBar playerManager;
+
     private static final String CLIENT_ID = "fed18b1e630343c2bbd7d05000b2c2a8";
     private static final String REDIRECT_URI = "http://localhost:8888/callback/";
 
@@ -34,8 +37,6 @@ public class MainActivity extends AppCompatActivity implements
     private static final int REQUEST_CODE = 1337;
 
     private String accessToken;
-
-    private Player player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements
         actionBar.hide();
 
         initFragment();
+
+        playerManager = (PlayerManagerBar) getSupportFragmentManager().findFragmentById(R.id.player_manager_bar);
 
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                 AuthenticationResponse.Type.TOKEN,
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements
                         player = spotifyPlayer;
                         player.addConnectionStateCallback(MainActivity.this);
                         player.addNotificationCallback(MainActivity.this);
+                        player.setShuffle(true);
                     }
 
                     @Override
@@ -157,7 +161,14 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onPlaybackEvent(PlayerEvent playerEvent) {
-        Log.d(this.getClass().getSimpleName(), "onPlaybackEvent");
+
+        if(playerEvent == PlayerEvent.kSpPlaybackNotifyTrackChanged){
+            String artist = player.getMetadata().currentTrack.artistName;
+            String track = player.getMetadata().currentTrack.name;
+
+            playerManager.setCurrentTrack(artist, track);
+        }
+
     }
 
     @Override
@@ -166,4 +177,5 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public String getAccessToken() {return this.accessToken;}
+    public Player getPlayer() {return this.player;}
 }
