@@ -25,6 +25,7 @@ import java.util.List;
 
 public class PlaylistView extends Fragment {
 
+    private MainActivity host;
     private int offset = 0;
     private Playlist playlist;
     private ArrayAdapter<Track> adapter;
@@ -33,6 +34,7 @@ public class PlaylistView extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        this.host = (MainActivity) getActivity();
         this.playlist = getArguments().getParcelable("playlist");
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tracks);
         initSongs();
@@ -54,7 +56,6 @@ public class PlaylistView extends Fragment {
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((list, view, i, l) -> {
-            MainActivity host = (MainActivity) getActivity();
             host.getPlayer().playUri(playlist.getUri(), i, 0);
         });
 
@@ -65,7 +66,7 @@ public class PlaylistView extends Fragment {
         @SuppressLint("StaticFieldLeak") AsyncTask<String, Void, String> task = new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... strings) {
-                RequestHandler handler = new RequestHandler((MainActivity) getActivity());
+                RequestHandler handler = new RequestHandler(host);
                 return handler.getMethod(playlist.getHref() + "/tracks?offset=" + offset);
             }
 

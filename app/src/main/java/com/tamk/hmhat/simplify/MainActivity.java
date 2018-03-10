@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements
     // Can be any integer
     private static final int REQUEST_CODE = 1337;
 
-    private String accessToken;
+    private static String accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
