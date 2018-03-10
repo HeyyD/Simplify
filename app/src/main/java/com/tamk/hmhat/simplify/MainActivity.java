@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements
                         player = spotifyPlayer;
                         player.addConnectionStateCallback(MainActivity.this);
                         player.addNotificationCallback(MainActivity.this);
+                        player.setShuffle(true);
                     }
 
                     @Override
