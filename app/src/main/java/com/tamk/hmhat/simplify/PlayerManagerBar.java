@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.spotify.sdk.android.player.Player;
@@ -19,18 +21,19 @@ public class PlayerManagerBar extends Fragment {
 
     private MainActivity host;
     private TextView currentTrack;
+    ImageButton playButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.player_manager, container, false);
 
-        Button previous = v.findViewById(R.id.previous);
+        ImageButton previous = v.findViewById(R.id.previous);
         previous.setOnClickListener((l) -> previous());
 
-        Button play = v.findViewById(R.id.play);
-        play.setOnClickListener((l) -> play());
+        playButton = v.findViewById(R.id.play);
+        playButton.setOnClickListener((l) -> play());
 
-        Button next = v.findViewById(R.id.next);
+        ImageButton next = v.findViewById(R.id.next);
         next.setOnClickListener((l) -> next());
 
         currentTrack = v.findViewById(R.id.currentTrack);
@@ -49,10 +52,14 @@ public class PlayerManagerBar extends Fragment {
 
     private void play(){
 
-        if(host.getPlayer().getPlaybackState().isPlaying)
+        if(host.getPlayer().getPlaybackState().isPlaying){
             host.getPlayer().pause();
-        else
+            playButton.setImageDrawable(getResources().getDrawable(R.mipmap.play_button));
+        }
+        else{
             host.getPlayer().resume();
+            playButton.setImageDrawable(getResources().getDrawable(R.mipmap.pause_button));
+        }
     }
 
     private void next() {
