@@ -1,6 +1,9 @@
 package com.tamk.hmhat.simplify;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +19,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,12 +50,13 @@ public class PlaylistView extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.playlist_view, container, false);
 
+        ImageView coverImage = v.findViewById(R.id.cover);
+        ImageView backgroundImage = v.findViewById(R.id.background_image);
+
         String imageUrl = playlist.getImages()[0];
 
         if(imageUrl != null){
-            ImageView imageView = v.findViewById(R.id.cover);
-            ImageLoadTask loadImage = new ImageLoadTask(imageUrl, imageView);
-            loadImage.execute();
+            loadImage(imageUrl, coverImage, backgroundImage);
         }
         
         ListView listView = v.findViewById(R.id.track_list);
@@ -60,6 +67,35 @@ public class PlaylistView extends Fragment {
         });
 
         return v;
+    }
+
+    private void loadImage(String url, ImageView cover, ImageView background){
+        @SuppressLint("StaticFieldLeak") AsyncTask<Void, Void, Bitmap> task = new AsyncTask<Void, Void, Bitmap>() {
+            @Override
+            protected Bitmap doInBackground(Void... voids) {
+                try {
+                    URL urlConnection = new URL(url);
+                    HttpURLConnection connection = (HttpURLConnection) urlConnection
+                            .openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    InputStream input = connection.getInputStream();
+                    Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                    return myBitmap;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap result) {
+                super.onPostExecute(result);
+                cover.setImageBitmap(result);
+                background.setImageBitmap(result);
+            }
+        };
+        task.execute();
     }
 
     private void initSongs(){
