@@ -161,16 +161,17 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onPlaybackEvent(PlayerEvent playerEvent) {
 
-        if(playerEvent == PlayerEvent.kSpPlaybackNotifyPlay) {
-            if(!player.getPlaybackState().isShuffling)
-                player.setShuffle(true);
-        }
-
         if(playerEvent == PlayerEvent.kSpPlaybackNotifyTrackChanged){
             String artist = player.getMetadata().currentTrack.artistName;
             String track = player.getMetadata().currentTrack.name;
 
             playerManager.setCurrentTrack(artist, track);
+
+            if(!player.getPlaybackState().isPlaying)
+                playerManager.init();
+
+            if(!player.getPlaybackState().isShuffling)
+                player.setShuffle(true);
         }
 
     }

@@ -21,7 +21,7 @@ public class PlayerManagerBar extends Fragment {
 
     private MainActivity host;
     private TextView currentTrack;
-    ImageButton playButton;
+    private ImageButton playButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,5 +69,9 @@ public class PlayerManagerBar extends Fragment {
 
     public void setCurrentTrack(String artist, String track){
         currentTrack.setText(track + " - " + artist);
+    }
+
+    public void init(){
+        playButton.setImageDrawable(getResources().getDrawable(R.mipmap.pause_button));
     }
 }
