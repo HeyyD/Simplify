@@ -71,8 +71,10 @@ public class MainActivity extends AppCompatActivity implements
     public void onBackPressed(){
         FragmentManager fm = getSupportFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
-            Log.i("MainActivity", "popping backstack");
-            fm.popBackStack();
+            if(!buffer.isBuffering()){
+                Log.i("MainActivity", "popping backstack");
+                fm.popBackStack();
+            }
         } else {
             Log.i("MainActivity", "nothing on backstack, calling super");
             super.onBackPressed();

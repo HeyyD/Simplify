@@ -37,12 +37,17 @@ public class PlaylistView extends Fragment {
     private ArrayAdapter<Track> adapter;
     private List<Track> tracks = new ArrayList<>();
 
+    private ImageView coverImage;
+    private ImageView backgroundImage;
+    private String imageUrl;
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         this.host = (MainActivity) getActivity();
         this.playlist = getArguments().getParcelable("playlist");
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tracks);
+
         initSongs();
     }
 
@@ -50,15 +55,14 @@ public class PlaylistView extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.playlist_view, container, false);
 
-        ImageView coverImage = v.findViewById(R.id.cover);
-        ImageView backgroundImage = v.findViewById(R.id.background_image);
-
-        String imageUrl = playlist.getImages()[0];
+        coverImage = v.findViewById(R.id.cover);
+        backgroundImage = v.findViewById(R.id.background_image);
+        imageUrl = playlist.getImages()[0];
 
         if(imageUrl != null){
             loadImage(imageUrl, coverImage, backgroundImage);
         }
-        
+
         ListView listView = v.findViewById(R.id.track_list);
         listView.setAdapter(adapter);
 
@@ -99,6 +103,9 @@ public class PlaylistView extends Fragment {
     }
 
     private void initSongs(){
+
+        host.getBuffer().startBuffering();
+
         @SuppressLint("StaticFieldLeak") AsyncTask<String, Void, String> task = new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... strings) {
@@ -124,6 +131,8 @@ public class PlaylistView extends Fragment {
                     if(jsonArray.length() == 100){
                         offset += jsonArray.length();
                         initSongs();
+                    } else {
+                        host.getBuffer().stopBuffering(PlaylistView.this);
                     }
 
 
