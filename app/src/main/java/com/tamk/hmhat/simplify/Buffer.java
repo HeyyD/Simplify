@@ -1,26 +1,39 @@
 package com.tamk.hmhat.simplify;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
 /**
- * Created by hmhat on 13.3.2018.
+ * Created by hmhat on 14.3.2018.
  */
 
-public class Buffer extends Fragment {
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+public class Buffer {
 
-        View v = inflater.inflate(R.layout.buffer, container, false);
+    private MainActivity host;
+    private static boolean isBuffering = false;
 
-        Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.buffer);
-        v.findViewById(R.id.buffer).setAnimation(rotation);
-
-        return v;
+    public Buffer (MainActivity host) {
+        this.host = host;
     }
+
+    public void startBuffering() {
+        if(!isBuffering){
+            BufferWindow buffer = new BufferWindow();
+            FragmentTransaction transaction = host.getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_view, buffer);
+            transaction.commit();
+            isBuffering = true;
+        }
+    }
+
+    public void stopBuffering(Fragment nextFragment) {
+        if(isBuffering){
+            FragmentTransaction transaction = host.getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_view, nextFragment);
+            transaction.commit();
+            isBuffering = false;
+        }
+    }
+
 }

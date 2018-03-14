@@ -67,6 +67,7 @@ public class PlaylistMenu extends Fragment {
     }
 
     public void initPlaylist(){
+        host.getBuffer().startBuffering();
         RequestHandler handler = new RequestHandler(host);
 
         //AsyncTask will get the playlist's in a thread and update the view post execute
@@ -102,10 +103,7 @@ public class PlaylistMenu extends Fragment {
                     e.printStackTrace();
                 }
                 adapter.notifyDataSetChanged();
-
-                FragmentTransaction transaction = host.getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.main_view, PlaylistMenu.this);
-                transaction.commit();
+                host.getBuffer().stopBuffering(PlaylistMenu.this);
             }
         };
         asyncTask.execute();

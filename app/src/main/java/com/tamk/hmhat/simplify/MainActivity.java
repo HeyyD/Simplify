@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.FrameMetricsAggregator;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,14 +21,13 @@ import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
 
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback
 {
 
     private Player player;
     private PlayerManagerBar playerManager;
+    private Buffer buffer;
 
     private static final String CLIENT_ID = "fed18b1e630343c2bbd7d05000b2c2a8";
     private static final String REDIRECT_URI = "http://localhost:8888/callback/";
@@ -50,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements
 
         initPlaylist();
 
+        buffer = new Buffer(this);
         playerManager = (PlayerManagerBar) getSupportFragmentManager().findFragmentById(R.id.player_manager_bar);
 
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
@@ -59,18 +58,10 @@ public class MainActivity extends AppCompatActivity implements
         AuthenticationRequest request = builder.build();
 
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
-        initBuffer();
     }
 
     private void initPlaylist(){
         PlaylistMenu fragment = new PlaylistMenu();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.main_view, fragment);
-        transaction.commit();
-    }
-
-    private void initBuffer(){
-        Fragment fragment = new Buffer();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.main_view, fragment);
         transaction.commit();
@@ -91,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent){
         super.onActivityResult(requestCode, resultCode, intent);
-
         // Check if result comes from the correct activity
         if (requestCode == REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
@@ -124,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onLoggedIn() {
-
         FragmentManager fm = getSupportFragmentManager();
         for(Fragment fragment: fm.getFragments()){
             if(fragment instanceof PlaylistMenu){
@@ -193,4 +182,5 @@ public class MainActivity extends AppCompatActivity implements
 
     public String getAccessToken() {return this.accessToken;}
     public Player getPlayer() {return this.player;}
+    public Buffer getBuffer() {return this.buffer;}
 }
