@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements
     // Can be any integer
     private static final int REQUEST_CODE = 1337;
 
-    private String accessToken;
+    private static String accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements
                         player = spotifyPlayer;
                         player.addConnectionStateCallback(MainActivity.this);
                         player.addNotificationCallback(MainActivity.this);
-                        player.setShuffle(true);
                     }
 
                     @Override
@@ -167,6 +166,12 @@ public class MainActivity extends AppCompatActivity implements
             String track = player.getMetadata().currentTrack.name;
 
             playerManager.setCurrentTrack(artist, track);
+
+            if(!player.getPlaybackState().isPlaying)
+                playerManager.init();
+
+            if(!player.getPlaybackState().isShuffling)
+                player.setShuffle(true);
         }
 
     }

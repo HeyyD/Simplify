@@ -37,7 +37,6 @@ public class PlaylistMenu extends Fragment {
 
         listView.setOnItemClickListener((list, view, i, l) -> {
             Playlist playlist = (Playlist) list.getItemAtPosition(i);
-            Log.d("ACCESS_TOKEN", playlist.getHref());
             changeFragment(playlist);
         });
 
@@ -48,9 +47,7 @@ public class PlaylistMenu extends Fragment {
         Fragment fragment = new PlaylistView();
 
         Bundle args = new Bundle();
-        args.putString("href", playlist.getHref());
-        args.putString("uri", playlist.getUri());
-        args.putStringArray("images", playlist.getImages());
+        args.putParcelable("playlist", playlist);
 
         fragment.setArguments(args);
 
