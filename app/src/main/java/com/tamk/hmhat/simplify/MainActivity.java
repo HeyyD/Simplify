@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
@@ -28,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private Player player;
     private PlayerManagerBar playerManager;
+    private Buffer buffer;
 
     private static final String CLIENT_ID = "fed18b1e630343c2bbd7d05000b2c2a8";
     private static final String REDIRECT_URI = "http://localhost:8888/callback/";
@@ -46,8 +46,9 @@ public class MainActivity extends AppCompatActivity implements
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        initFragment();
+        initPlaylist();
 
+        buffer = new Buffer(this);
         playerManager = (PlayerManagerBar) getSupportFragmentManager().findFragmentById(R.id.player_manager_bar);
 
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
@@ -59,10 +60,10 @@ public class MainActivity extends AppCompatActivity implements
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
     }
 
-    private void initFragment(){
-        Fragment fragment = new PlaylistMenu();
+    private void initPlaylist(){
+        PlaylistMenu fragment = new PlaylistMenu();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_view, fragment);
+        transaction.add(R.id.main_view, fragment);
         transaction.commit();
     }
 
@@ -70,8 +71,10 @@ public class MainActivity extends AppCompatActivity implements
     public void onBackPressed(){
         FragmentManager fm = getSupportFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
-            Log.i("MainActivity", "popping backstack");
-            fm.popBackStack();
+            if(!buffer.isBuffering()){
+                Log.i("MainActivity", "popping backstack");
+                fm.popBackStack();
+            }
         } else {
             Log.i("MainActivity", "nothing on backstack, calling super");
             super.onBackPressed();
@@ -81,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent){
         super.onActivityResult(requestCode, resultCode, intent);
-
         // Check if result comes from the correct activity
         if (requestCode == REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
@@ -114,12 +116,11 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onLoggedIn() {
-
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_view);
-
-        if(fragment instanceof PlaylistMenu){
-            PlaylistMenu menu = (PlaylistMenu) fragment;
-            menu.initPlaylist();
+        FragmentManager fm = getSupportFragmentManager();
+        for(Fragment fragment: fm.getFragments()){
+            if(fragment instanceof PlaylistMenu){
+                ((PlaylistMenu) fragment).initPlaylist();
+            }
         }
     }
 
@@ -183,4 +184,5 @@ public class MainActivity extends AppCompatActivity implements
 
     public String getAccessToken() {return this.accessToken;}
     public Player getPlayer() {return this.player;}
+    public Buffer getBuffer() {return this.buffer;}
 }
