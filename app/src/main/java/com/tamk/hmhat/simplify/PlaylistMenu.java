@@ -52,7 +52,7 @@ public class PlaylistMenu extends Fragment {
 
         listView.setOnItemClickListener((list, view, i, l) -> {
             Playlist playlist = (Playlist) list.getItemAtPosition(i);
-            changeFragment(playlist);
+            changeFragment(playlist, new PlaylistView());
         });
 
         listView.setOnTouchListener(((view, event) -> {
@@ -62,9 +62,7 @@ public class PlaylistMenu extends Fragment {
         return v;
     }
 
-    private void changeFragment(Playlist playlist){
-        Fragment fragment = new PlaylistView();
-
+    private void changeFragment(Playlist playlist, Fragment fragment){
         Bundle args = new Bundle();
         args.putParcelable("playlist", playlist);
 
@@ -135,6 +133,7 @@ public class PlaylistMenu extends Fragment {
                 Playlist playlist = adapter.getItem(listView.pointToPosition(Math.round(event1.getX()),
                                                                              Math.round(event1.getY())));
                 Log.d("DEBUG", playlist.toString());
+                changeFragment(playlist, new ArtistList());
             } catch (ArrayIndexOutOfBoundsException e) {
 
             }
