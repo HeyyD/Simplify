@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FrameMetricsAggregator;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
@@ -21,6 +21,8 @@ import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        initFragment();
+        initPlaylist();
 
         playerManager = (PlayerManagerBar) getSupportFragmentManager().findFragmentById(R.id.player_manager_bar);
 
@@ -57,12 +59,20 @@ public class MainActivity extends AppCompatActivity implements
         AuthenticationRequest request = builder.build();
 
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+        initBuffer();
     }
 
-    private void initFragment(){
-        Fragment fragment = new PlaylistMenu();
+    private void initPlaylist(){
+        PlaylistMenu fragment = new PlaylistMenu();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_view, fragment);
+        transaction.add(R.id.main_view, fragment);
+        transaction.commit();
+    }
+
+    private void initBuffer(){
+        Fragment fragment = new Buffer();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.main_view, fragment);
         transaction.commit();
     }
 
@@ -115,11 +125,11 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLoggedIn() {
 
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_view);
-
-        if(fragment instanceof PlaylistMenu){
-            PlaylistMenu menu = (PlaylistMenu) fragment;
-            menu.initPlaylist();
+        FragmentManager fm = getSupportFragmentManager();
+        for(Fragment fragment: fm.getFragments()){
+            if(fragment instanceof PlaylistMenu){
+                ((PlaylistMenu) fragment).initPlaylist();
+            }
         }
     }
 

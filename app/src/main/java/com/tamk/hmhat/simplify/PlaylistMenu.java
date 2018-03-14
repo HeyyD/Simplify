@@ -25,8 +25,15 @@ import java.util.List;
 
 public class PlaylistMenu extends Fragment {
 
+    private MainActivity host;
     private List<Playlist> playlists = new ArrayList<>();
     private ArrayAdapter<Playlist> adapter;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        this.host = (MainActivity) getActivity();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,7 +67,7 @@ public class PlaylistMenu extends Fragment {
     }
 
     public void initPlaylist(){
-        RequestHandler handler = new RequestHandler((MainActivity) getActivity());
+        RequestHandler handler = new RequestHandler(host);
 
         //AsyncTask will get the playlist's in a thread and update the view post execute
         @SuppressLint("StaticFieldLeak") AsyncTask<String, Void, String> asyncTask = new AsyncTask<String, Void, String>() {
@@ -95,6 +102,10 @@ public class PlaylistMenu extends Fragment {
                     e.printStackTrace();
                 }
                 adapter.notifyDataSetChanged();
+
+                FragmentTransaction transaction = host.getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.main_view, PlaylistMenu.this);
+                transaction.commit();
             }
         };
         asyncTask.execute();
