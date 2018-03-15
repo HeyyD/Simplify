@@ -45,7 +45,7 @@ public class PlaylistView extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         this.host = (MainActivity) getActivity();
-        this.playlist = getArguments().getParcelable("playlist");
+        this.playlist = (Playlist) getArguments().getSerializable("playlist");
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tracks);
 
         initSongs();

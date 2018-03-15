@@ -63,7 +63,7 @@ public class PlaylistMenu extends Fragment {
 
     private void changeFragment(Playlist playlist, Fragment fragment, int animationIn, int animationOut, int popEnter, int popExit){
         Bundle args = new Bundle();
-        args.putParcelable("playlist", playlist);
+        args.putSerializable("playlist", playlist);
 
         fragment.setArguments(args);
 
@@ -94,7 +94,7 @@ public class PlaylistMenu extends Fragment {
 
                     for(int i = 0; i < jsonArray.length(); i++){
                         JSONObject o = jsonArray.getJSONObject(i);
-                        String href = o.getString("href");
+                        /*String href = o.getString("href");
                         String name = o.getString("name");
                         String uri = o.getString("uri");
 
@@ -103,9 +103,9 @@ public class PlaylistMenu extends Fragment {
 
                         for(int j = 0; j < imagesJson.length(); j++){
                             imageUrls[j] = imagesJson.getJSONObject(j).getString("url");
-                        }
+                        }*/
 
-                        Playlist playlist = new Playlist(href, uri, name, imageUrls);
+                        Playlist playlist = new Playlist(o);
                         playlists.add(playlist);
                     }
                 } catch (JSONException e) {

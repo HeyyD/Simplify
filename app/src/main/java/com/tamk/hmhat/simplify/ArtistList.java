@@ -36,7 +36,7 @@ public class ArtistList extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        this.playlist = getArguments().getParcelable("playlist");
+        this.playlist = (Playlist) getArguments().getSerializable("playlist");
         this.host = (MainActivity) getActivity();
         initArtists();
     }
