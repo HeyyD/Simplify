@@ -11,7 +11,7 @@
 
     <RelativeLayout
         android:id="@+id/main_view"
-        android:name="com.tamk.hmhat.simplify.PlaylistMenu"
+        android:name="com.tamk.hmhat.simplify.AlbumMenu"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9"/>
