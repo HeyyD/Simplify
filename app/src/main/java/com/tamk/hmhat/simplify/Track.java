@@ -3,39 +3,33 @@ package com.tamk.hmhat.simplify;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by hmhat on 9.3.2018.
  */
 
-public class Track implements Parcelable{
-    
-    public static final Creator<Track> CREATOR = new Creator<Track>() {
-        @Override
-        public Track createFromParcel(Parcel in) {
-            return new Track(in);
-        }
+public class Track {
 
-        @Override
-        public Track[] newArray(int size) {
-            return new Track[size];
-        }
-    };
-
-    private String uri;
     private String name;
+    private Artist[] artists;
 
-    public Track(String uri, String name) {
-        this.uri = uri;
-        this.name = name;
-    }
+    public Track(JSONObject json) {
+        try {
+            this.name = json.getString("name");
 
-    protected Track(Parcel in) {
-        uri = in.readString();
-        name = in.readString();
-    }
+            JSONArray jsonArray = json.getJSONArray("artists");
+            this.artists = new Artist[jsonArray.length()];
 
-    public String getUri() {
-        return uri;
+            for(int i = 0; i < jsonArray.length(); i++){
+                this.artists[i] = new Artist(jsonArray.getJSONObject(i));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getName() {
@@ -43,18 +37,13 @@ public class Track implements Parcelable{
     }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(uri);
-        parcel.writeString(name);
-    }
-
-    @Override
     public String toString() {
-        return this.name;
+
+        String string = this.name + " -";
+
+        for(Artist artist: this.artists)
+            string += (" " + artist.toString());
+
+        return string;
     }
 }

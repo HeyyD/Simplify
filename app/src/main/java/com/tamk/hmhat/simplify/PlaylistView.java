@@ -45,7 +45,7 @@ public class PlaylistView extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         this.host = (MainActivity) getActivity();
-        this.playlist = getArguments().getParcelable("playlist");
+        this.playlist = (Playlist) getArguments().getSerializable("playlist");
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tracks);
 
         initSongs();
@@ -122,16 +122,14 @@ public class PlaylistView extends Fragment {
 
                     for(int i = 0; i < jsonArray.length(); i++){
                         JSONObject o = jsonArray.getJSONObject(i).getJSONObject("track");
-                        String uri = o.getString("uri");
-                        String name = o.getString("name");
-                        tracks.add(new Track(uri, name));
+                        tracks.add(new Track(o));
                     }
-                    adapter.notifyDataSetChanged();
 
                     if(jsonArray.length() == 100){
                         offset += jsonArray.length();
                         initSongs();
                     } else {
+                        adapter.notifyDataSetChanged();
                         host.getBuffer().stopBuffering(PlaylistView.this);
                     }
 
