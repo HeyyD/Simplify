@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -29,6 +31,8 @@ public class PlaylistMenu extends Fragment {
     private List<Playlist> playlists = new ArrayList<>();
     private ArrayAdapter<Playlist> adapter;
 
+    private GestureDetector gestureDetector;
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -38,29 +42,34 @@ public class PlaylistMenu extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.playlist_menu, container, false);
+
         ListView listView = v.findViewById(R.id.user_lists);
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, playlists);
         listView.setAdapter(adapter);
 
+        gestureDetector = new GestureDetector(host, new ListGestureListener(listView));
+
         listView.setOnItemClickListener((list, view, i, l) -> {
             Playlist playlist = (Playlist) list.getItemAtPosition(i);
-            changeFragment(playlist);
+            changeFragment(playlist, new PlaylistView(), R.anim.fragment_fade_in, R.anim.fragment_fade_out, R.anim.fragment_fade_in, R.anim.fragment_fade_out);
         });
+
+        listView.setOnTouchListener(((view, event) -> {
+            return gestureDetector.onTouchEvent(event);
+        }));
 
         return v;
     }
 
-    private void changeFragment(Playlist playlist){
-        Fragment fragment = new PlaylistView();
-
+    private void changeFragment(Playlist playlist, Fragment fragment, int animationIn, int animationOut, int popEnter, int popExit){
         Bundle args = new Bundle();
         args.putParcelable("playlist", playlist);
 
         fragment.setArguments(args);
 
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit,
-                                        R.anim.fragment_enter, R.anim.fragment_exit);
+        transaction.setCustomAnimations(animationIn, animationOut,
+                                        popEnter, popExit);
         transaction.replace(R.id.main_view, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
@@ -107,5 +116,34 @@ public class PlaylistMenu extends Fragment {
             }
         };
         asyncTask.execute();
+    }
+
+    private class ListGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        private ListView listView;
+
+        public ListGestureListener(ListView listView) {
+            this.listView = listView;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY) {
+            try{
+
+                float diffY = Math.abs(event2.getY() - event1.getY());
+                float diffX = event2.getX() - event1.getX();
+                
+                if(diffX < 0 && diffY < 150) {
+                    Playlist playlist = adapter.getItem(listView.pointToPosition(Math.round(event1.getX()),
+                            Math.round(event1.getY())));
+                    changeFragment(playlist, new ArtistList(), R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_left,
+                            R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right);
+                }
+
+            } catch (ArrayIndexOutOfBoundsException e) {
+
+            }
+            return true;
+        }
     }
 }
