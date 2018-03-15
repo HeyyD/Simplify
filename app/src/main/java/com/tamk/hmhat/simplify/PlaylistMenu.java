@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,7 +51,7 @@ public class PlaylistMenu extends Fragment {
 
         listView.setOnItemClickListener((list, view, i, l) -> {
             Playlist playlist = (Playlist) list.getItemAtPosition(i);
-            changeFragment(playlist, new PlaylistView());
+            changeFragment(playlist, new PlaylistView(), R.anim.fragment_fade_in, R.anim.fragment_fade_out, R.anim.fragment_fade_in, R.anim.fragment_fade_out);
         });
 
         listView.setOnTouchListener(((view, event) -> {
@@ -62,15 +61,15 @@ public class PlaylistMenu extends Fragment {
         return v;
     }
 
-    private void changeFragment(Playlist playlist, Fragment fragment){
+    private void changeFragment(Playlist playlist, Fragment fragment, int animationIn, int animationOut, int popEnter, int popExit){
         Bundle args = new Bundle();
         args.putParcelable("playlist", playlist);
 
         fragment.setArguments(args);
 
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit,
-                                        R.anim.fragment_enter, R.anim.fragment_exit);
+        transaction.setCustomAnimations(animationIn, animationOut,
+                                        popEnter, popExit);
         transaction.replace(R.id.main_view, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
@@ -133,7 +132,7 @@ public class PlaylistMenu extends Fragment {
                 Playlist playlist = adapter.getItem(listView.pointToPosition(Math.round(event1.getX()),
                                                                              Math.round(event1.getY())));
                 Log.d("DEBUG", playlist.toString());
-                changeFragment(playlist, new ArtistList());
+                changeFragment(playlist, new ArtistList(), R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right);
             } catch (ArrayIndexOutOfBoundsException e) {
 
             }
