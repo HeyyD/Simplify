@@ -129,10 +129,17 @@ public class PlaylistMenu extends Fragment {
         @Override
         public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY) {
             try{
-                Playlist playlist = adapter.getItem(listView.pointToPosition(Math.round(event1.getX()),
-                                                                             Math.round(event1.getY())));
-                Log.d("DEBUG", playlist.toString());
-                changeFragment(playlist, new ArtistList(), R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right);
+
+                float diffY = Math.abs(event2.getY() - event1.getY());
+                float diffX = event2.getX() - event1.getX();
+                
+                if(diffX < 0 && diffY < 150) {
+                    Playlist playlist = adapter.getItem(listView.pointToPosition(Math.round(event1.getX()),
+                            Math.round(event1.getY())));
+                    changeFragment(playlist, new ArtistList(), R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_left,
+                            R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right);
+                }
+
             } catch (ArrayIndexOutOfBoundsException e) {
 
             }
