@@ -8,16 +8,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -29,7 +28,8 @@ public class ArtistList extends Fragment {
 
     private MainActivity host;
     private Playlist playlist;
-    private Set<Artist> set = new TreeSet<>();
+    private Set<Artist> artists = new TreeSet<>();
+    private ArrayAdapter<Artist> adapter;
 
     private int offset;
 
@@ -46,6 +46,11 @@ public class ArtistList extends Fragment {
         View v = inflater.inflate(R.layout.artist_list, container, false);
         TextView textView = v.findViewById(R.id.playlist_name);
         textView.setText(playlist.getName());
+
+        ListView list = v.findViewById(R.id.artist_list);
+        adapter = new ArrayAdapter<>(host, android.R.layout.simple_list_item_1, new ArrayList<>());
+        list.setAdapter(adapter);
+        
         return v;
     }
 
@@ -67,7 +72,7 @@ public class ArtistList extends Fragment {
                         JSONArray artists = track.getJSONArray("artists");
 
                         for(int j = 0; j < artists.length(); j++) {
-                            set.add(new Artist(artists.getJSONObject(j)));
+                            ArtistList.this.artists.add(new Artist(artists.getJSONObject(j)));
                         }
 
                     }
@@ -77,7 +82,8 @@ public class ArtistList extends Fragment {
                     if(jsonArray.length() == 100) {
                         initArtists();
                     } else {
-                        Log.d("DEBUG", set.toString());
+                        adapter.addAll(artists);
+                        adapter.notifyDataSetChanged();
                     }
 
                 } catch (JSONException e) {

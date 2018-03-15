@@ -12,5 +12,11 @@
         android:text="PLAYLIST NAME"
         android:textSize="20dp"
         android:textAlignment="center"/>
+    <ListView
+        android:id="@+id/artist_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
 
 </LinearLayout>
