@@ -122,9 +122,7 @@ public class PlaylistView extends Fragment {
 
                     for(int i = 0; i < jsonArray.length(); i++){
                         JSONObject o = jsonArray.getJSONObject(i).getJSONObject("track");
-                        String uri = o.getString("uri");
-                        String name = o.getString("name");
-                        tracks.add(new Track(uri, name));
+                        tracks.add(new Track(o));
                     }
                     adapter.notifyDataSetChanged();
 
