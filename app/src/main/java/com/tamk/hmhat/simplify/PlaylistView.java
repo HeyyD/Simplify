@@ -124,12 +124,12 @@ public class PlaylistView extends Fragment {
                         JSONObject o = jsonArray.getJSONObject(i).getJSONObject("track");
                         tracks.add(new Track(o));
                     }
-                    adapter.notifyDataSetChanged();
 
                     if(jsonArray.length() == 100){
                         offset += jsonArray.length();
                         initSongs();
                     } else {
+                        adapter.notifyDataSetChanged();
                         host.getBuffer().stopBuffering(PlaylistView.this);
                     }
 

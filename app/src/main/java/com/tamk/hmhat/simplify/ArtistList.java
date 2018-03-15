@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -28,7 +29,8 @@ public class ArtistList extends Fragment {
 
     private MainActivity host;
     private Playlist playlist;
-    private Set<Artist> artists = new TreeSet<>();
+    private List<Artist> artists = new ArrayList<>();
+    private Set<Artist> artistsSet = new TreeSet<>();
     private ArrayAdapter<Artist> adapter;
 
     private int offset;
@@ -48,13 +50,16 @@ public class ArtistList extends Fragment {
         textView.setText(playlist.getName());
 
         ListView list = v.findViewById(R.id.artist_list);
-        adapter = new ArrayAdapter<>(host, android.R.layout.simple_list_item_1, new ArrayList<>());
+        adapter = new ArrayAdapter<>(host, android.R.layout.simple_list_item_1, artists);
         list.setAdapter(adapter);
-        
+
         return v;
     }
 
     private void initArtists() {
+
+        host.getBuffer().startBuffering();
+
         @SuppressLint("StaticFieldLeak") AsyncTask<String,Void,String> task = new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... strings) {
@@ -72,7 +77,7 @@ public class ArtistList extends Fragment {
                         JSONArray artists = track.getJSONArray("artists");
 
                         for(int j = 0; j < artists.length(); j++) {
-                            ArtistList.this.artists.add(new Artist(artists.getJSONObject(j)));
+                            artistsSet.add(new Artist(artists.getJSONObject(j)));
                         }
 
                     }
@@ -82,8 +87,10 @@ public class ArtistList extends Fragment {
                     if(jsonArray.length() == 100) {
                         initArtists();
                     } else {
-                        adapter.addAll(artists);
+                        artists.addAll(artistsSet);
                         adapter.notifyDataSetChanged();
+                        host.getBuffer().stopBuffering(ArtistList.this);
+                        Log.d("DEBUG","artists: " + artistsSet.size());
                     }
 
                 } catch (JSONException e) {
