@@ -13,71 +13,30 @@
         android:padding="10dp"
         android:textSize="20dp"/>
 
-    <TableLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:stretchColumns="*"
-        android:shrinkColumns="*">
+        android:padding="20dp">
 
-        <TableRow>
-            <ImageView android:src="@mipmap/ic_launcher"
-                        android:scaleType="fitXY"/>
-            <ImageView android:src="@mipmap/ic_launcher"
-                android:scaleType="fitXY"/>
-            <ImageView android:src="@mipmap/ic_launcher"
-                android:scaleType="fitXY"/>
-        </TableRow>
-        <TableRow>
-            <ImageView android:src="@mipmap/ic_launcher"
-                android:scaleType="fitXY"/>
-            <ImageView android:src="@mipmap/ic_launcher"
-                android:scaleType="fitXY"/>
-            <ImageView android:src="@mipmap/ic_launcher"
-                android:scaleType="fitXY"/>
-        </TableRow>        <TableRow>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-    </TableRow>        <TableRow>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-    </TableRow>        <TableRow>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-    </TableRow>        <TableRow>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-    </TableRow>        <TableRow>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-    </TableRow>        <TableRow>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-        <ImageView android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
-    </TableRow>
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="3">
 
-    </TableLayout>
+            <ImageButton
+                android:src="@mipmap/ic_launcher"
+                android:layout_columnWeight="1"
+                android:layout_height="115dp"/>
+            <ImageButton
+                android:src="@mipmap/ic_launcher"
+                android:layout_columnWeight="1"
+                android:layout_height="115dp"/>
+            <ImageButton
+                android:src="@mipmap/ic_launcher"
+                android:layout_columnWeight="1"
+                android:layout_height="115dp"/>
 
+        </GridLayout>
+
+    </ScrollView>
 </LinearLayout>
