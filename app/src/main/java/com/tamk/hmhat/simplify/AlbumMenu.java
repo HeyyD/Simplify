@@ -31,6 +31,7 @@ import java.util.ArrayList;
 
 public class AlbumMenu extends Fragment {
 
+    private boolean initialized;
     private MainActivity host;
     private Artist artist;
     private GridLayout albumCoverGrid;
@@ -50,6 +51,8 @@ public class AlbumMenu extends Fragment {
         TextView textView = v.findViewById(R.id.artist_name);
         textView.setText(artist.getName());
         albumCoverGrid = v.findViewById(R.id.album_list);
+        if(initialized)
+            createButtons();
         return v;
     }
 
@@ -74,6 +77,7 @@ public class AlbumMenu extends Fragment {
                         albums.add(new Playlist(jsonArray.getJSONObject(i)));
                     }
 
+                    initialized = true;
                     createButtons();
 
                 } catch (JSONException e) {
