@@ -62,8 +62,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void initPlaylist(){
-        //PlaylistMenu fragment = new PlaylistMenu();
-        Fragment fragment = new AlbumMenu();
+        PlaylistMenu fragment = new PlaylistMenu();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.main_view, fragment);
         transaction.commit();

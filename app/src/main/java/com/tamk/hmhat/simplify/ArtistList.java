@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,11 +50,31 @@ public class ArtistList extends Fragment {
         TextView textView = v.findViewById(R.id.playlist_name);
         textView.setText(playlist.getName());
 
-        ListView list = v.findViewById(R.id.artist_list);
+        ListView artistList = v.findViewById(R.id.artist_list);
         adapter = new ArrayAdapter<>(host, android.R.layout.simple_list_item_1, artists);
-        list.setAdapter(adapter);
+        artistList.setAdapter(adapter);
+
+        artistList.setOnItemClickListener((list, view, i, l) -> {
+            Artist artist = (Artist) list.getItemAtPosition(i);
+            changeFragment(artist);
+        });
 
         return v;
+    }
+
+    private void changeFragment(Artist artist){
+        Fragment albumMenu = new AlbumMenu();
+        Bundle args = new Bundle();
+        args.putSerializable("artist", artist);
+
+        FragmentTransaction transaction = host.getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out,
+                                        R.anim.fragment_fade_in, R.anim.fragment_fade_out);
+
+        transaction.replace(R.id.main_view, albumMenu);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
     }
 
     private void initArtists() {
@@ -90,7 +111,6 @@ public class ArtistList extends Fragment {
                         artists.addAll(artistsSet);
                         adapter.notifyDataSetChanged();
                         host.getBuffer().stopBuffering(ArtistList.this);
-                        Log.d("DEBUG","artists: " + artistsSet.size());
                     }
 
                 } catch (JSONException e) {

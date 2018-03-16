@@ -19,6 +19,7 @@
         android:padding="20dp">
 
         <GridLayout
+            android:id="@+id/album_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:columnCount="3">

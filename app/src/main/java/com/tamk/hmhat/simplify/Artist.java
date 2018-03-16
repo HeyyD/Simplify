@@ -5,11 +5,13 @@ import android.support.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by hmhat on 15.3.2018.
  */
 
-public class Artist implements Comparable<Artist> {
+public class Artist implements Comparable<Artist>, Serializable {
 
     private String name;
 
