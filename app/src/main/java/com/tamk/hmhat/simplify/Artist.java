@@ -13,10 +13,12 @@ import java.io.Serializable;
 
 public class Artist implements Comparable<Artist>, Serializable {
 
+    private String href;
     private String name;
 
     public Artist(JSONObject json) {
         try {
+            this.href = json.getString("href");
             this.name = json.getString("name");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -26,6 +28,8 @@ public class Artist implements Comparable<Artist>, Serializable {
     public String getName() {
         return this.name;
     }
+
+    public String getHref() {return this.href;}
 
     @Override
     public int compareTo(@NonNull Artist artist) {

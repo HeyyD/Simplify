@@ -66,6 +66,7 @@ public class ArtistList extends Fragment {
         Fragment albumMenu = new AlbumMenu();
         Bundle args = new Bundle();
         args.putSerializable("artist", artist);
+        albumMenu.setArguments(args);
 
         FragmentTransaction transaction = host.getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out,
