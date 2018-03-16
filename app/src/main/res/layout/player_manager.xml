@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="5">
+
+    <TextView
+        android:id="@+id/currentTrack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="#FF160d04"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:background="#FF160d04"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:weightSum="5">
+
+        <ImageButton
+            android:id="@+id/previous"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/next_button"
+            android:scaleX="-1"
+            android:tint="#FF9e7653"
+            android:background="#00000000"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/play"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/play_button"
+            android:tint="#FF9e7653"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:background="#00000000"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/next_button"
+            android:tint="#FF9e7653"
+            android:background="#00000000"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+</LinearLayout>
