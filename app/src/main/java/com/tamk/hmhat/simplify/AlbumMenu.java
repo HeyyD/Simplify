@@ -8,6 +8,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by hmhat on 15.3.2018.
@@ -17,6 +24,7 @@ public class AlbumMenu extends Fragment {
 
     private MainActivity host;
     private Artist artist;
+    private ArrayList<Album> albums = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,6 +37,8 @@ public class AlbumMenu extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.album_menu, container, false);
+        TextView textView = v.findViewById(R.id.artist_name);
+        textView.setText(artist.getName());
         return v;
     }
 
@@ -44,7 +54,20 @@ public class AlbumMenu extends Fragment {
             @Override
             protected void onPostExecute(String result) {
                 super.onPostExecute(result);
-                Log.d("DEBUG", result);
+
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    JSONArray jsonArray = jsonObject.getJSONArray("items");
+
+                    for(int i = 0; i < jsonArray.length(); i++) {
+                        albums.add(new Album(jsonArray.getJSONObject(i)));
+                    }
+
+                    Log.d("DEBUG", "albums: " + albums.toString());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         };
         task.execute();
