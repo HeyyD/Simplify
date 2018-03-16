@@ -116,12 +116,22 @@ public class PlaylistView extends Fragment {
             @Override
             public void onPostExecute(String result){
 
+                Log.d("DEBUG", result);
+
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     JSONArray jsonArray = jsonObject.getJSONArray("items");
 
                     for(int i = 0; i < jsonArray.length(); i++){
-                        JSONObject o = jsonArray.getJSONObject(i).getJSONObject("track");
+
+                        JSONObject o;
+
+                        try {
+                            o = jsonArray.getJSONObject(i).getJSONObject("track");
+                        } catch (JSONException e) {
+                            o = jsonArray.getJSONObject(i);
+                        }
+
                         tracks.add(new Track(o));
                     }
 

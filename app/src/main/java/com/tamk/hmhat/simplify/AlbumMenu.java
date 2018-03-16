@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.view.ContextThemeWrapper;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -93,6 +94,22 @@ public class AlbumMenu extends Fragment {
             params.height = buttonSize;
             params.width = buttonSize;
             button.setLayoutParams(params);
+
+            button.setOnClickListener((listener) -> {
+                Fragment fragment = new PlaylistView();
+                Bundle args = new Bundle();
+                args.putSerializable("playlist", album);
+
+                fragment.setArguments(args);
+
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out,
+                                                R.anim.fragment_fade_in, R.anim.fragment_fade_out);
+                transaction.replace(R.id.main_view, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            });
+
             button.setImage(host, album.getImages()[0]);
             albumCoverGrid.addView(button);
         }
