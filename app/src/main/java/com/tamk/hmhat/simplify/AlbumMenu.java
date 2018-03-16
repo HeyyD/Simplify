@@ -33,7 +33,7 @@ public class AlbumMenu extends Fragment {
     private MainActivity host;
     private Artist artist;
     private GridLayout albumCoverGrid;
-    private ArrayList<Album> albums = new ArrayList<>();
+    private ArrayList<Playlist> albums = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,7 @@ public class AlbumMenu extends Fragment {
                     JSONArray jsonArray = jsonObject.getJSONArray("items");
 
                     for(int i = 0; i < jsonArray.length(); i++) {
-                        albums.add(new Album(jsonArray.getJSONObject(i)));
+                        albums.add(new Playlist(jsonArray.getJSONObject(i)));
                     }
 
                     createButtons();
@@ -87,7 +87,7 @@ public class AlbumMenu extends Fragment {
 
         int buttonSize = (getScreenWidth(host)) / 3;
 
-        for(Album album: albums) {
+        for(Playlist album: albums) {
             AlbumButton button = new AlbumButton(host);
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.height = buttonSize;
