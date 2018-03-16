@@ -88,11 +88,12 @@ public class AlbumMenu extends Fragment {
         int buttonSize = (getScreenWidth(host)) / 3;
 
         for(Album album: albums) {
-            ImageButton button = new ImageButton(host);
+            AlbumButton button = new AlbumButton(host);
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.height = buttonSize;
             params.width = buttonSize;
             button.setLayoutParams(params);
+            button.setImage(host, album.getImages()[0]);
             albumCoverGrid.addView(button);
         }
     }

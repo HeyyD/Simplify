@@ -28,6 +28,10 @@ public class Album {
         }
     }
 
+    public String[] getImages() {
+        return this.images;
+    }
+
     @Override
     public String toString(){
         return this.name;
