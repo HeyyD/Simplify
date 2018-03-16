@@ -15,28 +15,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="20dp">
+        android:layout_height="match_parent">
 
         <GridLayout
             android:id="@+id/album_list"
-            android:layout_width="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:columnCount="3">
-
-            <ImageButton
-                android:src="@mipmap/ic_launcher"
-                android:layout_columnWeight="1"
-                android:layout_height="115dp"/>
-            <ImageButton
-                android:src="@mipmap/ic_launcher"
-                android:layout_columnWeight="1"
-                android:layout_height="115dp"/>
-            <ImageButton
-                android:src="@mipmap/ic_launcher"
-                android:layout_columnWeight="1"
-                android:layout_height="115dp"/>
-
         </GridLayout>
 
     </ScrollView>

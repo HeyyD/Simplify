@@ -1,13 +1,21 @@
 package com.tamk.hmhat.simplify;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.view.ContextThemeWrapper;
+import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -24,6 +32,7 @@ public class AlbumMenu extends Fragment {
 
     private MainActivity host;
     private Artist artist;
+    private GridLayout albumCoverGrid;
     private ArrayList<Album> albums = new ArrayList<>();
 
     @Override
@@ -39,6 +48,7 @@ public class AlbumMenu extends Fragment {
         View v = inflater.inflate(R.layout.album_menu, container, false);
         TextView textView = v.findViewById(R.id.artist_name);
         textView.setText(artist.getName());
+        albumCoverGrid = v.findViewById(R.id.album_list);
         return v;
     }
 
@@ -63,7 +73,7 @@ public class AlbumMenu extends Fragment {
                         albums.add(new Album(jsonArray.getJSONObject(i)));
                     }
 
-                    Log.d("DEBUG", "albums: " + albums.toString());
+                    createButtons();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -72,4 +82,28 @@ public class AlbumMenu extends Fragment {
         };
         task.execute();
     }
+
+    private void createButtons() {
+
+        int buttonSize = (getScreenWidth(host)) / 3;
+
+        for(Album album: albums) {
+            ImageButton button = new ImageButton(host);
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            params.height = buttonSize;
+            params.width = buttonSize;
+            button.setLayoutParams(params);
+            albumCoverGrid.addView(button);
+        }
+    }
+
+    private int getScreenWidth(Context context)
+    {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        return metrics.widthPixels;
+    }
+
 }
