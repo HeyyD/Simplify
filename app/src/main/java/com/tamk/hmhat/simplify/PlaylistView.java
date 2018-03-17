@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,13 +48,14 @@ public class PlaylistView extends Fragment {
         this.host = (MainActivity) getActivity();
         this.playlist = (Playlist) getArguments().getSerializable("playlist");
         adapter = new ArrayAdapter<>(getActivity(), R.layout.track_list_item, tracks);
-
         initSongs();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.playlist_view, container, false);
+        TextView name = v.findViewById(R.id.album_name);
+        name.setText(playlist.getName());
 
         coverImage = v.findViewById(R.id.cover);
         backgroundImage = v.findViewById(R.id.background_image);
