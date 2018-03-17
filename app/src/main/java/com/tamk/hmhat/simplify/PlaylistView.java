@@ -35,7 +35,7 @@ public class PlaylistView extends Fragment {
     private MainActivity host;
     private int offset = 0;
     private Playlist playlist;
-    private ArrayAdapter<Track> adapter;
+    private TrackAdapter adapter;
     private List<Track> tracks = new ArrayList<>();
 
     private ImageView coverImage;
@@ -47,7 +47,7 @@ public class PlaylistView extends Fragment {
         super.onCreate(savedInstanceState);
         this.host = (MainActivity) getActivity();
         this.playlist = (Playlist) getArguments().getSerializable("playlist");
-        adapter = new ArrayAdapter<>(getActivity(), R.layout.track_list_item, tracks);
+        adapter = new TrackAdapter(getActivity(), R.layout.track_list_item, tracks);
         initSongs();
     }
 
