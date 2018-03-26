@@ -36,6 +36,10 @@ public class Track {
         return name;
     }
 
+    public Artist[] getArtists(){
+        return this.artists;
+    }
+
     @Override
     public String toString() {
 

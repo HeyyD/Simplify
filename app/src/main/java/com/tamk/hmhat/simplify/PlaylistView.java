@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,7 +36,7 @@ public class PlaylistView extends Fragment {
     private MainActivity host;
     private int offset = 0;
     private Playlist playlist;
-    private ArrayAdapter<Track> adapter;
+    private TrackAdapter adapter;
     private List<Track> tracks = new ArrayList<>();
 
     private ImageView coverImage;
@@ -46,16 +48,17 @@ public class PlaylistView extends Fragment {
         super.onCreate(savedInstanceState);
         this.host = (MainActivity) getActivity();
         this.playlist = (Playlist) getArguments().getSerializable("playlist");
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tracks);
-
+        adapter = new TrackAdapter(getActivity(), R.layout.track_list_item, tracks);
         initSongs();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.playlist_view, container, false);
+        TextView name = v.findViewById(R.id.album_name);
+        name.setText(playlist.getName());
 
-        coverImage = v.findViewById(R.id.cover);
+        //coverImage = v.findViewById(R.id.cover);
         backgroundImage = v.findViewById(R.id.background_image);
         imageUrl = playlist.getImages()[0];
 
@@ -95,7 +98,7 @@ public class PlaylistView extends Fragment {
             @Override
             protected void onPostExecute(Bitmap result) {
                 super.onPostExecute(result);
-                cover.setImageBitmap(result);
+                //cover.setImageBitmap(result);
                 background.setImageBitmap(result);
             }
         };
