@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -57,7 +58,7 @@ public class PlaylistView extends Fragment {
         TextView name = v.findViewById(R.id.album_name);
         name.setText(playlist.getName());
 
-        coverImage = v.findViewById(R.id.cover);
+        //coverImage = v.findViewById(R.id.cover);
         backgroundImage = v.findViewById(R.id.background_image);
         imageUrl = playlist.getImages()[0];
 
@@ -97,7 +98,7 @@ public class PlaylistView extends Fragment {
             @Override
             protected void onPostExecute(Bitmap result) {
                 super.onPostExecute(result);
-                cover.setImageBitmap(result);
+                //cover.setImageBitmap(result);
                 background.setImageBitmap(result);
             }
         };
