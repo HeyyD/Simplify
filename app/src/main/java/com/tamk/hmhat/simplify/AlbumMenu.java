@@ -114,7 +114,14 @@ public class AlbumMenu extends Fragment {
                 transaction.commit();
             });
 
-            button.setImage(host, album.getImages()[0]);
+            String albumCover;
+
+            switch (album.getImages().length) {
+                case 3: albumCover = album.getImages()[1]; break;
+                default: albumCover = album.getImages()[0]; break;
+            }
+
+            button.setImage(host, albumCover);
             albumCoverGrid.addView(button);
         }
     }
