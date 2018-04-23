@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
@@ -14,23 +15,39 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by hmhat on 16.3.2018.
+ * A custom button that extends AppCompatImageButton. This is used to show the
+ * clickable album covers.
  */
 
 public class AlbumButton extends android.support.v7.widget.AppCompatImageButton {
+
+    /**
+     * @see AppCompatImageButton#AppCompatImageButton(Context)
+     */
     public AlbumButton(Context context) {
         super(context);
     }
 
+    /**
+     * @see AppCompatImageButton#AppCompatImageButton(Context, AttributeSet)
+     */
     public AlbumButton(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+    /**
+     * @see AppCompatImageButton#AppCompatImageButton(Context, AttributeSet, int)
+     */
     public AlbumButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setImage(MainActivity host, String url) {
+    /**
+     * Sets the image of the button in a AsyncTask. The image has to be fetched from
+     * the internet before it can be set to the button.
+     * @param url Url of the image to be downloaded
+     */
+    public void setImage(String url) {
         @SuppressLint("StaticFieldLeak")
         AsyncTask<Void, Void, Bitmap> task = new AsyncTask<Void, Void, Bitmap>() {
             @Override

@@ -14,7 +14,8 @@ import android.widget.TextView;
 import com.spotify.sdk.android.player.Player;
 
 /**
- * Created by hmhat on 6.3.2018.
+ * UI for managing the Spotify player. Simply holds the buttons so that the user can change
+ * tracks, pause and continue.
  */
 
 public class PlayerManagerBar extends Fragment {
@@ -23,6 +24,10 @@ public class PlayerManagerBar extends Fragment {
     private TextView currentTrack;
     private ImageButton playButton;
 
+    /**
+     * Initializes the view and creates listeners for all the buttons.
+     * @see Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.player_manager, container, false);
@@ -67,10 +72,18 @@ public class PlayerManagerBar extends Fragment {
             host.getPlayer().skipToNext();
     }
 
+    /**
+     * Update the UI with information from the currently played track.
+     * @param artist Artists name
+     * @param track Track name
+     */
     public void setCurrentTrack(String artist, String track){
         currentTrack.setText(track + " - " + artist);
     }
 
+    /**
+     * Init play button image.
+     */
     public void init(){
         playButton.setImageDrawable(getResources().getDrawable(R.mipmap.pause_button));
     }

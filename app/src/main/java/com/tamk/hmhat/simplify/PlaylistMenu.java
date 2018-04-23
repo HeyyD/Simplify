@@ -22,7 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by hmhat on 6.3.2018.
+ * List of all the users playlists. This fragment is a simple list of items, but it has a custom
+ * Gesture listener. List items can be swiped from right to left and then a new fragment is
+ * opened that lists all the artists from the swiped playlist.
  */
 
 public class PlaylistMenu extends Fragment {
@@ -33,12 +35,21 @@ public class PlaylistMenu extends Fragment {
 
     private GestureDetector gestureDetector;
 
+    /**
+     * Saves current MainActivity as a host
+     * @see Fragment#onCreate(Bundle)
+     */
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         this.host = (MainActivity) getActivity();
     }
 
+    /**
+     * Creates the UI of the fragment and creates onClickListener and ListGestureListener to the
+     * list.
+     * @see Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.playlist_menu, container, false);
@@ -75,6 +86,10 @@ public class PlaylistMenu extends Fragment {
         transaction.commit();
     }
 
+    /**
+     * Fetches all the users playlist's from the Spotify api in a AsyncTask and adds them to the
+     * list in UI.
+     */
     public void initPlaylist(){
         host.getBuffer().startBuffering();
         RequestHandler handler = new RequestHandler(host);
