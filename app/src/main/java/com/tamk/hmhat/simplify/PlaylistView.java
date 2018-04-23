@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by hmhat on 8.3.2018.
+ * Shows all the songs from the playlist and the user is able to choose songs to listen from here.
  */
 
 public class PlaylistView extends Fragment {
@@ -43,6 +43,11 @@ public class PlaylistView extends Fragment {
     private ImageView backgroundImage;
     private String imageUrl;
 
+    /**
+     * Gets the chosen playlist from this fragments arguments, and starts the fetching of the tracks
+     * in this playlist.
+     * @see Fragment#onCreate(Bundle)
+     */
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -52,6 +57,10 @@ public class PlaylistView extends Fragment {
         initSongs();
     }
 
+    /**
+     * Creates the UI for this fragment. Sets also onItemClickListener for the list of songs.
+     * @see Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.playlist_view, container, false);
