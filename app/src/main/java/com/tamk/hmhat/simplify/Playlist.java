@@ -10,7 +10,8 @@ import org.json.JSONObject;
 import java.io.Serializable;
 
 /**
- * Created by hmhat on 7.3.2018.
+ * Playlist class holds the relevant information that the application needs from the playlist's
+ * data.
  */
 
 public class Playlist implements Serializable{
@@ -20,6 +21,11 @@ public class Playlist implements Serializable{
     private String name;
     private String[] images;
 
+    /**
+     * The constructor parses all the needed data from the playlist data and saves it into
+     * attributes.
+     * @param json JSON that holds the playlist data.
+     */
     public Playlist(JSONObject json){
         try {
             this.href = json.getString("href");
@@ -37,22 +43,37 @@ public class Playlist implements Serializable{
         }
     }
 
+    /**
+     * @return Link to the data of the playlist.
+     */
     public String getHref() {
         return href;
     }
 
+    /**
+     * @return Name of the playlist
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return Uri that is used by the music player when the user wants to listen to the playlist.
+     */
     public String getUri() {
         return uri;
     }
 
+    /**
+     * @return Array of links that hold the cover images of the playlist
+     */
     public String[] getImages() {
         return images;
     }
 
+    /**
+     * @return Name of the playlist
+     */
     @Override
     public String toString(){
         return this.name;

@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Created by hmhat on 14.3.2018.
+ * Fragment that lists all the artist for users selected playlist.
  */
 
 public class ArtistList extends Fragment {
@@ -36,6 +36,12 @@ public class ArtistList extends Fragment {
 
     private int offset;
 
+    /**
+     * Initializes the fragment by setting the host of the fragment (MainActivity)
+     * and getting the playlist which has the artists that we want to list from the
+     * fragments arguments.
+     * @see Fragment#onCreate(Bundle)
+     */
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -44,6 +50,11 @@ public class ArtistList extends Fragment {
         initArtists();
     }
 
+    /**
+     * Creates the UI for the list of artists. Also creates a itemClickListener for the
+     * list.
+     * @see Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.artist_list, container, false);

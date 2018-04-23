@@ -12,7 +12,8 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by hmhat on 17.3.2018.
+ * Custom ArrayAdapter. Because the tracks need to print the song name and artist, I decided to
+ * create a custom ArrayAdapter so that I can use custom list items.
  */
 
 public class TrackAdapter extends ArrayAdapter<Track> {
@@ -21,6 +22,9 @@ public class TrackAdapter extends ArrayAdapter<Track> {
     private int resource;
     private List<Track> data = null;
 
+    /**
+     * @see ArrayAdapter#ArrayAdapter(Context, int, Object[])
+     */
     public  TrackAdapter(Context context, int resource, List<Track> data) {
         super(context, resource, data);
         this.resource = resource;
@@ -28,6 +32,10 @@ public class TrackAdapter extends ArrayAdapter<Track> {
         this.data = data;
     }
 
+    /**
+     * Creates the custom list item
+     * @see ArrayAdapter#getView(int, View, ViewGroup)
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 

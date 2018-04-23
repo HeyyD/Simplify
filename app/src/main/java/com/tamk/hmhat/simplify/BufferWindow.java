@@ -11,10 +11,15 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 /**
- * Created by hmhat on 13.3.2018.
+ * View between fragment changes.
  */
 
 public class BufferWindow extends Fragment {
+
+    /**
+     * Creates the buffer view with a simple rotating buffer.
+     * @see Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

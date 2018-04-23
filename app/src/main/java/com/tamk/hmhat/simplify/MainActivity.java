@@ -1,6 +1,7 @@
 package com.tamk.hmhat.simplify;
 
 import android.content.Intent;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -22,6 +23,12 @@ import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
 
+/**
+ * MainActivity starts up the whole application. It starts up by logging in to the
+ * users Spotify account (Premium is needed). It implements both interfaces that
+ * are needed to create a Spotify app (NotificationCallback, ConnectionStateCallback).
+ * Authentication and the initialization of the music player is handled here.
+ */
 public class MainActivity extends AppCompatActivity implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback
 {
@@ -39,6 +46,11 @@ public class MainActivity extends AppCompatActivity implements
 
     private static String accessToken;
 
+    /**
+     * Creates the UI for the app, and initializes all the needed components.
+     * It also starts the authentication process.
+     * @see AppCompatActivity#onCreate(Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +80,11 @@ public class MainActivity extends AppCompatActivity implements
         transaction.commit();
     }
 
+    /**
+     * Because the whole app is handled in one activity, the back pressing has to handle all the
+     * fragment changes.
+     * @see AppCompatActivity#onBackPressed()
+     */
     @Override
     public void onBackPressed(){
         FragmentManager fm = getSupportFragmentManager();
@@ -115,6 +132,10 @@ public class MainActivity extends AppCompatActivity implements
         super.onDestroy();
     }
 
+    /**
+     * If user successfully logs in the application loads all the users playlist's.
+     * @see ConnectionStateCallback#onLoggedIn()
+     */
     @Override
     public void onLoggedIn() {
         FragmentManager fm = getSupportFragmentManager();
@@ -125,11 +146,19 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * @see ConnectionStateCallback#onLoggedOut()
+     */
     @Override
     public void onLoggedOut() {
         Log.d(this.getClass().getSimpleName(), "onLoggedOut");
     }
 
+    /**
+     * If user does not have premium account this is called. User will be shown a dialog that tells
+     * them to get a premium account if they wish to continue using this app.
+     * @see ConnectionStateCallback#onLoginFailed(int)
+     */
     @Override
     public void onLoginFailed(int i) {
         Log.d(this.getClass().getSimpleName(), "onLoginFailed: " + i);
@@ -150,16 +179,27 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * @see ConnectionStateCallback#onTemporaryError()
+     */
     @Override
     public void onTemporaryError() {
         Log.d(this.getClass().getSimpleName(), "onTemporaryError");
     }
 
+    /**
+     * @see ConnectionStateCallback#onConnectionMessage(String)
+     */
     @Override
     public void onConnectionMessage(String s) {
         Log.d(this.getClass().getSimpleName(), "onConnectionMessage");
     }
 
+    /**
+     * Handles the track changes of the player. This is simply used to update the Artist and song
+     * name in the UI.
+     * @see SpotifyPlayer.NotificationCallback#onPlaybackEvent(PlayerEvent)
+     */
     @Override
     public void onPlaybackEvent(PlayerEvent playerEvent) {
 
@@ -178,12 +218,26 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     * @see SpotifyPlayer.NotificationCallback#onPlaybackError(Error)
+     */
     @Override
     public void onPlaybackError(Error error) {
         Log.d(this.getClass().getSimpleName(), "onPlaybackError");
     }
 
+    /**
+     * @return The accessToken of the user. Needed for fetching data from the api.
+     */
     public String getAccessToken() {return this.accessToken;}
+
+    /**
+     * @return The Spotify music player
+     */
     public Player getPlayer() {return this.player;}
+
+    /**
+     * @return The buffer handler of the application.
+     */
     public Buffer getBuffer() {return this.buffer;}
 }
