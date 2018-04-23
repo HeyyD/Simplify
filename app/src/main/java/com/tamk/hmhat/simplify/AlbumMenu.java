@@ -26,7 +26,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by hmhat on 15.3.2018.
+ * The view where the user can see all the albums of the selected
+ * artist.
  */
 
 public class AlbumMenu extends Fragment {
@@ -37,6 +38,11 @@ public class AlbumMenu extends Fragment {
     private GridLayout albumCoverGrid;
     private ArrayList<Playlist> albums = new ArrayList<>();
 
+    /**
+     * Starts the initialization of the view by setting the host (MainActivity)
+     * and getting the artist from the arguments of this Fragment.
+     * @see Fragment#onCreate(Bundle)
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +51,10 @@ public class AlbumMenu extends Fragment {
         initAlbums();
     }
 
+    /**
+     * Creates the UI of this fragment and starts the loading of AlbumButtons.
+     * @see Fragment#onCreateView(LayoutInflater, ViewGroup, Bundle)
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.album_menu, container, false);
@@ -121,7 +131,7 @@ public class AlbumMenu extends Fragment {
                 default: albumCover = album.getImages()[0]; break;
             }
 
-            button.setImage(host, albumCover);
+            button.setImage(albumCover);
             albumCoverGrid.addView(button);
         }
     }
