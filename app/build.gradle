@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'AndroidKey'
+            keyPassword 'chronicles2206'
+            storeFile file('C:/Users/hmhat/keystores/android.jks')
+            storePassword 'chronicles2206'
+        }
+    }
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.tamk.hmhat.simplify"
@@ -14,6 +22,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     compileOptions {
@@ -30,15 +39,12 @@ repositories {
 }
 
 dependencies {
-
     // This library handles authentication and authorization
     compile 'com.spotify.sdk:spotify-auth:beta21-noconnect-2.18c@aar'
     // This library handles music playback
     compile 'com.spotify.sdk:spotify-player:beta21-noconnect-2.18c@aar'
-
     compile 'com.android.support:cardview-v7:26.1.0'
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
