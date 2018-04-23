@@ -51,7 +51,7 @@ public class Artist implements Comparable<Artist>, Serializable {
     }
 
     /**
-     * @see Object#toString() 
+     * @see Object#toString()
      */
     @Override
     public String toString(){
