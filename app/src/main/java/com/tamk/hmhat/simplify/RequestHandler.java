@@ -11,17 +11,27 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by hmhat on 7.3.2018.
+ * Because the application has to do so many same kind of fetch requests, I decided to do a simple
+ * class that does a GET request and builds the fetched data into a String.
  */
 
 public class RequestHandler {
 
     private MainActivity host;
 
+    /**
+     * Save current MainActivity into an attribute
+     * @param host Current MainActivity
+     */
     public RequestHandler(MainActivity host){
         this.host = host;
     }
 
+    /**
+     * Does a GET request to chosen address and returns the fetched data in a String form
+     * @param address url that data is going to be fetched from
+     * @return fetched data as String
+     */
     public String getMethod(String address){
         try{
             URL url = new URL(address);
