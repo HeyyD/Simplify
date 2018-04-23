@@ -8,7 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by hmhat on 9.3.2018.
+ * Track class holds all the needed information that the application uses.
  */
 
 public class Track {
@@ -16,6 +16,10 @@ public class Track {
     private String name;
     private Artist[] artists;
 
+    /**
+     * The constructor parses all the needed information from the given JSON
+     * @param json data that needs to be parsed
+     */
     public Track(JSONObject json) {
         try {
             this.name = json.getString("name");
@@ -32,14 +36,23 @@ public class Track {
         }
     }
 
+    /**
+     * @return Name of the track
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return Array of artists of the song
+     */
     public Artist[] getArtists(){
         return this.artists;
     }
 
+    /**
+     * @see Object#toString()
+     */
     @Override
     public String toString() {
 
